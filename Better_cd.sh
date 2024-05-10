@@ -4,12 +4,12 @@
 # 1. Copy this file to somewhere (e.g. ~/my_cd.sh).
 # 2. Add the following line to your .bashrc:
 #    source ~/my_cd.sh
-# 3. Resource the .bashrc by executing the commend:
+# 3. Resource the .bashrc by executing the command:
 #    source ~/.bashrc
 #
 # Usage:
 # 1. `cd` now also record `pwd` to the `.dir_history`
-# 2. `cdl` list the directories you have been.
+# 2. `cdl` list the directories you have been to.
 # 3. `cdl 20` list 20 directories you have been.
 # 4. `cdd` go to the last directory
 # 5. `cdd 4` go to the fourth directory listed by `cdl`

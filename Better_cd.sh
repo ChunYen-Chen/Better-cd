@@ -1,9 +1,9 @@
 #!/bin/bash
 #====================================================================================================
 # Setup:
-# 1. Copy this file to somewhere (e.g. ~/my_cd.sh).
+# 1. Copy this file to somewhere (e.g. ~/Better_cd.sh).
 # 2. Add the following line to your .bashrc:
-#    source ~/my_cd.sh
+#    source ~/Better_cd.sh
 # 3. Resource the .bashrc by executing the command:
 #    source ~/.bashrc
 #

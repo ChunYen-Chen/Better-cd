@@ -1,6 +1,3 @@
-# Better-cd
-A better `cd` command allows the user to go to the history path.
-
 ## Setup
 1. Copy this file to somewhere (e.g. `~/Better_cd.sh`).
 1. Add the following line to your .bashrc:

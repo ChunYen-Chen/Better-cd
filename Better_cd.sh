@@ -20,12 +20,11 @@
 #====================================================================================================
 # Global variables
 #====================================================================================================
-HIST_FILE="$HOME/.dir_history"          # history file location
-HIST_FILE_REAL=`readlink $HIST_FILE`    # history file location
-HIST_LIMIT=100                          # number of directory history
-DEFAULT_LIST_NUMBER=10                  # default number of listing directories
-DEFAULT_TARGET=2                        # default target number (2 is the last directory)
-INT_RE='^[0-9]+$'                       # regular expression of integer
+B_CD_HIST_FILE="$HOME/.dir_history"       # history file location
+B_CD_HIST_FILE_REAL=`readlink $HIST_FILE` # history file location
+B_CD_HIST_LIMIT=100                       # number of directory history
+B_CD_DEFAULT_LIST_NUMBER=10               # default number of listing directories
+B_CD_DEFAULT_TARGET=2                     # default target number (2 is the last directory)
 
 
 
@@ -38,13 +37,13 @@ cd() {
 }
 
 cdl() {
-    local list_num=$DEFAULT_LIST_NUMBER
+    local list_num=$B_CD_DEFAULT_LIST_NUMBER
     if [ $# -ne 0 ]; then list_num=$1; fi
-    tail $HIST_FILE_REAL -n $list_num | tac | nl
+    tail $B_CD_HIST_FILE_REAL -n $list_num | tac | nl
 }
 
 cdd() {
-    local tar_num=$DEFAULT_TARGET
+    local tar_num=$B_CD_DEFAULT_TARGET
     if [ $# -ne 0 ]; then tar_num=$1; fi
     local tar_dir=$(__go_dir $tar_num)
 
@@ -59,11 +58,12 @@ cdd() {
 
 __go_dir ()
 {
-    local hist_num=$(wc -l < "$HIST_FILE_REAL")
+    local hist_num=$(wc -l < "$B_CD_HIST_FILE_REAL")
+    local int_re='^[0-9]+$' # regular expression of integer
 
     if [ $# -eq 0 ]; then
         local target_num=$(($hist_num-1))
-    elif ! [[ $1 =~ $INT_RE ]]; then
+    elif ! [[ $1 =~ $int_re ]]; then
         echo "err2"
         return 2
     elif [ $1 -le 0 ] || [ $1 -gt $hist_num ]; then
@@ -73,7 +73,7 @@ __go_dir ()
         local target_num=$(($hist_num-$1+1))
     fi
 
-    local target=($(sed -n ${target_num}p $HIST_FILE_REAL))
+    local target=($(sed -n ${target_num}p $B_CD_HIST_FILE_REAL))
 
     local host=${target[0]}
     local tar_dir=${target[1]}
@@ -87,9 +87,9 @@ __record_dir ()
     local record=true
 
     # If the last history is the same as current pwd, then don't record
-    local n_hist=$(wc -l < "$HIST_FILE_REAL")
+    local n_hist=$(wc -l < "$B_CD_HIST_FILE_REAL")
     local target_num=$(($n_hist))
-    local target=($(sed -n ${target_num}p $HIST_FILE_REAL))
+    local target=($(sed -n ${target_num}p $B_CD_HIST_FILE_REAL))
 
     local tar_dir=${target[1]}
     if [ "$tar_dir" = "$PWD" ]; then record=false; fi
@@ -97,14 +97,14 @@ __record_dir ()
     # Record the path to history
     if "$record"; then
         local str_to_store=`printf "%8s %s" $HOSTNAME $PWD`
-        echo "$str_to_store" >> $HIST_FILE_REAL
+        echo "$str_to_store" >> $B_CD_HIST_FILE_REAL
     fi
 
     # If the history reached the limit number, delete the oldest one.
-    n_hist=$(wc -l < "$HIST_FILE_REAL")
+    n_hist=$(wc -l < "$B_CD_HIST_FILE_REAL")
 
-    if [ $n_hist -gt $HIST_LIMIT ]; then
-        sed -i '1d' "$HIST_FILE_REAL"
+    if [ $n_hist -gt $B_CD_HIST_LIMIT ]; then
+        sed -i '1d' "$B_CD_HIST_FILE_REAL"
     fi
 }
 
@@ -114,11 +114,11 @@ __record_dir ()
 # Main
 #====================================================================================================
 # If the file is not link, use the original one
-if [[ -z $HIST_FILE_REAL ]] ; then HIST_FILE_REAL=$HIST_FILE ; fi
+if [[ -z $B_CD_HIST_FILE_REAL ]] ; then B_CD_HIST_FILE_REAL=$B_CD_HIST_FILE ; fi
 
 # Initialize the history file if not exist
-if [ ! -f $HIST_FILE_REAL ]; then
-    echo "$HIST_FILE_REAL does not exist. Create a new one!"
-    touch $HIST_FILE_REAL
-    printf "%8s %s" $HOSTNAME $PWD >> $HIST_FILE_REAL
+if [ ! -f $B_CD_HIST_FILE_REAL ]; then
+    echo "$B_CD_HIST_FILE_REAL does not exist. Create a new one!"
+    touch $B_CD_HIST_FILE_REAL
+    printf "%8s %s" $HOSTNAME $PWD >> $B_CD_HIST_FILE_REAL
 fi

@@ -38,15 +38,15 @@ cd() {
 }
 
 cdl() {
-    list_num=$DEFAULT_LIST_NUMBER
+    local list_num=$DEFAULT_LIST_NUMBER
     if [ $# -ne 0 ]; then list_num=$1; fi
     tail $HIST_FILE_REAL -n $list_num | tac | nl
 }
 
 cdd() {
-    tar_num=$DEFAULT_TARGET
+    local tar_num=$DEFAULT_TARGET
     if [ $# -ne 0 ]; then tar_num=$1; fi
-    tar_dir=$(__go_dir $tar_num)
+    local tar_dir=$(__go_dir $tar_num)
 
     if [ "$tar_dir" = "err1" ]; then
         echo "Wrong input of the directory number."
@@ -59,10 +59,10 @@ cdd() {
 
 __go_dir ()
 {
-    hist_num=$(wc -l < "$HIST_FILE_REAL")
+    local hist_num=$(wc -l < "$HIST_FILE_REAL")
 
     if [ $# -eq 0 ]; then
-        target_num=$(($hist_num-1))
+        local target_num=$(($hist_num-1))
     elif ! [[ $1 =~ $INT_RE ]]; then
         echo "err2"
         return 2
@@ -70,13 +70,13 @@ __go_dir ()
         echo "err1"
         return 1
     else
-        target_num=$(($hist_num-$1+1))
+        local target_num=$(($hist_num-$1+1))
     fi
 
-    target=($(sed -n ${target_num}p $HIST_FILE_REAL))
+    local target=($(sed -n ${target_num}p $HIST_FILE_REAL))
 
-    host=${target[0]}
-    tar_dir=${target[1]}
+    local host=${target[0]}
+    local tar_dir=${target[1]}
 
     echo $tar_dir
     return 0
@@ -84,19 +84,19 @@ __go_dir ()
 
 __record_dir ()
 {
-    record=true
+    local record=true
 
     # If the last history is the same as current pwd, then don't record
-    n_hist=$(wc -l < "$HIST_FILE_REAL")
-    target_num=$(($n_hist))
-    target=($(sed -n ${target_num}p $HIST_FILE_REAL))
+    local n_hist=$(wc -l < "$HIST_FILE_REAL")
+    local target_num=$(($n_hist))
+    local target=($(sed -n ${target_num}p $HIST_FILE_REAL))
 
-    tar_dir=${target[1]}
+    local tar_dir=${target[1]}
     if [ "$tar_dir" = "$PWD" ]; then record=false; fi
 
     # Record the path to history
     if "$record"; then
-        str_to_store=`printf "%8s %s" $HOSTNAME $PWD`
+        local str_to_store=`printf "%8s %s" $HOSTNAME $PWD`
         echo "$str_to_store" >> $HIST_FILE_REAL
     fi
 
@@ -120,6 +120,5 @@ if [[ -z $HIST_FILE_REAL ]] ; then HIST_FILE_REAL=$HIST_FILE ; fi
 if [ ! -f $HIST_FILE_REAL ]; then
     echo "$HIST_FILE_REAL does not exist. Create a new one!"
     touch $HIST_FILE_REAL
-    str_to_store=`printf "%8s %s" $HOSTNAME $PWD`
-    echo "$str_to_store" >> $HIST_FILE_REAL
+    printf "%8s %s" $HOSTNAME $PWD >> $HIST_FILE_REAL
 fi

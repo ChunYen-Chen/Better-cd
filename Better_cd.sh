@@ -20,11 +20,11 @@
 #====================================================================================================
 # Global variables
 #====================================================================================================
-B_CD_HIST_FILE="$HOME/.dir_history"       # history file location
-B_CD_HIST_FILE_REAL=`readlink $HIST_FILE` # history file location
-B_CD_HIST_LIMIT=100                       # number of directory history
-B_CD_DEFAULT_LIST_NUMBER=10               # default number of listing directories
-B_CD_DEFAULT_TARGET=2                     # default target number (2 is the last directory)
+B_CD_HIST_FILE="$HOME/.dir_history"            # history file location
+B_CD_HIST_FILE_REAL=`readlink $B_CD_HIST_FILE` # history file location
+B_CD_HIST_LIMIT=100                            # number of directory history
+B_CD_DEFAULT_LIST_NUMBER=10                    # default number of listing directories
+B_CD_DEFAULT_TARGET=2                          # default target number (2 is the last directory)
 
 
 

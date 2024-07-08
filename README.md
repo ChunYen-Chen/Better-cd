@@ -4,7 +4,7 @@
    ```shell
    source ~/Better_cd.sh
    ```
-1. Resource the .bashrc by executing the command:
+1. Resource the `.bashrc` by executing the command:
    ```shell
    source ~/.bashrc
    ```

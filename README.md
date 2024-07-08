@@ -1,6 +1,6 @@
 ## Setup
 1. Copy this file to somewhere (e.g. `~/Better_cd.sh`).
-1. Add the following line to your .bashrc:
+1. Add the following line to your `.bashrc`:
    ```shell
    source ~/Better_cd.sh
    ```

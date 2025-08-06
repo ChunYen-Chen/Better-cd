@@ -39,7 +39,11 @@ cd() {
 cdl() {
     local list_num=$B_CD_DEFAULT_LIST_NUMBER
     if [ $# -ne 0 ]; then list_num=$1; fi
-    tail $B_CD_HIST_FILE_REAL -n $list_num | tac | nl
+    if [[ "$OSTYPE" == "darwin"* ]]; then # Mac OSX
+        tail -n $list_num $B_CD_HIST_FILE_REAL | tail -r | nl
+    else
+        tail -n $list_num $B_CD_HIST_FILE_REAL | tac | nl
+    fi
 }
 
 cdd() {
